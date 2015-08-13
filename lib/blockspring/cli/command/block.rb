@@ -44,10 +44,17 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
     # load config file
     config_text = File.read('blockspring.json')
     config_json = JSON.parse(config_text)
-    # TODO: ensure valid config
-    puts "Pulling #{config_json['user']}/#{config_json['id']}"
-    block = get_block(config_json['id'])
-    save_block_files(block, '.', 'Pulling')
+    if not config_json['git_url'].nil?
+      #push any commits to github
+      system 'git pull'
+      puts "git pull"
+    else
+
+      # TODO: ensure valid config
+      puts "Pulling #{config_json['user']}/#{config_json['id']}"
+      block = get_block(config_json['id'])
+      save_block_files(block, '.', 'Pulling')
+    end
     puts "Done."
   end
 
