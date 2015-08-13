@@ -88,13 +88,6 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
       config_json = JSON.parse(config_text)
     end
 
-    #check to see if the url for the git repo was configured
-    if File.file?('git_config.json')
-      #push any commits to github
-      system 'git push'
-      puts "git push"
-    end
-
     if config_json['language'].nil?
       return error('You must declare a language in your blockspring.json file.')
     end
