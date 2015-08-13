@@ -44,12 +44,12 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
     # load config file
     config_text = File.read('blockspring.json')
     config_json = JSON.parse(config_text)
-    if not config_json['git_url'].nil?
-      #push any commits to github
+    if File.file?('git_config.json')
+      #pull latest code from github
       system 'git pull'
       puts "git pull"
     else
-
+      #pull latest code from blockspring 
       # TODO: ensure valid config
       puts "Pulling #{config_json['user']}/#{config_json['id']}"
       block = get_block(config_json['id'])
@@ -86,6 +86,13 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
     else
       config_text = File.read('blockspring.json')
       config_json = JSON.parse(config_text)
+    end
+
+    #check to see if the url for the git repo was configured
+    if File.file?('git_config.json')
+      #push any commits to github
+      system 'git push'
+      puts "git push"
     end
 
     if config_json['language'].nil?
@@ -128,6 +135,16 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
         error('That block does not exist or you don\'t have permission to push to it')
       end
     end
+
+    #check to see if the url for the git repo was configured
+    if File.file?('git_config.json')
+      #push any commits to github with latest blockspring.json
+      system 'git add blockspring.json'
+      system 'git commit -m "updated blockspring.json"'
+      system 'git push'
+      puts "git push"
+    end
+
   end
 
   # block:new LANGUAGE "Block Name"

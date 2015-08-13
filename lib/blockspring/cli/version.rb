@@ -1,5 +1,7 @@
 module Blockspring
   module CLI
-    VERSION = "0.0.10"
+    VERSION = "0.0.999"
   end
 end
+
+
