@@ -1,4 +1,4 @@
-# Blockspring CLI
+# Blockspring CLI.
 
 The Blockspring CLI is used to manage, run, and deploy cloud functions (we call them "blocks") from the command line.
 
