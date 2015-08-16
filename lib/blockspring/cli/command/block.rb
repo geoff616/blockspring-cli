@@ -4,6 +4,7 @@ require "launchy"
 # manipulate blocks (get, push, pull, new)
 #
 class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
+
   # block:get BLOCKID
   #
   # pull down an existing block from blockspring
@@ -42,12 +43,23 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
   #
   def pull
     # load config file
-    config_text = File.read('blockspring.json')
-    config_json = JSON.parse(config_text)
-    if File.file?('git_config.json')
+    config_json = config_to_json
+    
+    #check to see if the git config file exists
+    if use_git
+      
+      #stash any changes to the git index
+      system 'git stash'
+      puts 'stashing any local changes'
+
       #pull latest code from github
       system 'git pull'
       puts "git pull"
+
+      #reapply changes and deal with any conflicts
+      system 'git stash pop'
+      puts "reapplying stashed changes"
+      
     else
       #pull latest code from blockspring 
       # TODO: ensure valid config
@@ -84,8 +96,7 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
           break
       end
     else
-      config_text = File.read('blockspring.json')
-      config_json = JSON.parse(config_text)
+      config_json = config_to_json
     end
 
     if config_json['language'].nil?
@@ -129,11 +140,23 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
       end
     end
 
-    #check to see if the url for the git repo was configured
-    if File.file?('git_config.json')
-      #push any commits to github with latest blockspring.json
+    #check to see if the git config file exists
+    if use_git
+      #remove any staged files prior to last commit
+      system 'git reset HEAD -- .'
+      puts "unstaging files"
+
+      #stage updated json 
       system 'git add blockspring.json'
-      system 'git commit -m "updated blockspring.json"'
+      puts "staging blockspring.json"
+
+      #Commit message for blockspring push
+      config_json = config_to_json
+      commit_cmd = 'git commit -m "Blockspring Push: ' + config_json['id'] + ' at ' + config_json['updated_at'].to_s + '"'
+      system commit_cmd 
+      puts "git commit"      
+
+      #Push to git
       system 'git push'
       puts "git push"
     end
@@ -179,8 +202,7 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
   end
 
   def open
-    config_text = File.read('blockspring.json')
-    config_json = JSON.parse(config_text)
+    config_json = config_to_json
 
     user = config_json['user']
     block_id = config_json['id']
@@ -263,4 +285,21 @@ protected
     # create config file
     save_block_config(block, dir_name, action)
   end
+
+  # Returned true if git_config file has been created for this block
+  def use_git
+    to_return = false 
+    if File.file?('git_config.json')
+      to_return = true
+    end
+    return to_return
+  end 
+
+  #return latest config file
+  def config_to_json
+    config_text = File.read('blockspring.json')
+    config_json = JSON.parse(config_text)
+    return config_json
+  end
+
 end
