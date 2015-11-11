@@ -42,10 +42,11 @@ $ git commit -m "change to function"
 $ blockspring push 
 ```
 the last command will:
-- Determine if the repo has changed since last commit and prompt user to confirm desired action 
- - Abort push to fix/confirm desired state
- - Reset directory to the state of the last commit by discarding changes and push
-- Push changes to Blockspring
+- Check if the repo has changed since last commit:
+ - If the repo has changed, the user is prompted to confirm desired action:
+  - 1. Abort push and stop executing prior to last 3 steps below
+  - 2. Reset directory to the state of the last commit by discarding all changes in the repo and continue:
+- Push code from last commit to Blockspring
 - Add the latest timestamp from the blockspring.json file to a new git commit
 - Push latest commits to git
 
