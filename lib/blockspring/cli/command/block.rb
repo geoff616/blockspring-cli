@@ -143,6 +143,8 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
     #check to see if the git config file exists
     if use_git
       #remove any staged files prior to last commit
+      # NOTE: Not sure unstaging is the best strategy to keep git in sync with blockspring
+      # This might be removing changes. Maybe `git stash` and communicate this is happening?
       system 'git reset HEAD -- .'
       puts "unstaging files"
 
