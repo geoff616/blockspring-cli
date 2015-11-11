@@ -26,7 +26,7 @@ An example directory looks like:
   - block.py
   - blockspring.json
   - gitspring.json
- - block-2f-2 
+ - block-2-2 
   - block.rb
   - ...
 ```
@@ -58,7 +58,7 @@ $ blockspring pull
 
 - Stash any files added or changed since the last commit
 - Pull the latest commits from git
-- Unstange your changes
+- Unstage your changes
 
 ## Implementation and discussion
 
