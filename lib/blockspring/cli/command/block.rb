@@ -155,7 +155,7 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
 
       #Commit message for blockspring push
       config_json = config_to_json
-      commit_cmd = "git commit -m \"Blockspring Push: #{config_json['id']} at #{config_json['updated_at'].to_s}\""
+      commit_cmd = "git commit -m \"Block - #{config_json['title']} - Push: #{config_json['id']} at #{config_json['updated_at'].to_s}\""
       system commit_cmd 
       puts "git commit of blockspring push timestamp"      
 

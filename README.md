@@ -15,7 +15,7 @@ $ gem install blockspring-cli-0.0.999.gem
 
 ##Usage:
 
-Gitspring is used from within a source controled directory, inside a block's top level directory. One or more blocks can reside inside a single git repo. 
+Gitspring is used from within a source controlled directory, inside a block's top level directory. One or more blocks can reside inside a single git repo. 
 
 An example directory looks like:
 ```
