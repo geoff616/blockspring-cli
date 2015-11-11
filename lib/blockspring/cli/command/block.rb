@@ -45,8 +45,8 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
     # load config file
     config_json = config_to_json
     
-    #stash any changes since last commit
     if use_git      
+      #stash any changes since last commit
       puts 'stashing any local changes'
       system 'git stash'
     end
@@ -79,17 +79,14 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
   def push
     _user, key = Blockspring::CLI::Auth.get_credentials
 
+    # Check repo state before commiting anything
     if use_git
 
-
-      # Call function that executes git status
-      has_repo_changed
-
-      #remove any staged files prior to last commit
-      # NOTE: Not sure unstaging is the best strategy to keep git in sync with blockspring
-      # This might be removing changes. Maybe `git stash` and communicate this is happening?
-      system 'git reset HEAD -- .'
-      puts "unstaging files"
+      # if repo has changed and user wants to abort, return prior to pushing to blockspring or git
+      if has_repo_changed 
+        puts 'Repo has changed since last commit. Push aborted.'
+        return 
+      end    
 
     end
 
@@ -160,7 +157,7 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
       config_json = config_to_json
       commit_cmd = "git commit -m \"Blockspring Push: #{config_json['id']} at #{config_json['updated_at'].to_s}\""
       system commit_cmd 
-      puts "git commit"      
+      puts "git commit of blockspring push timestamp"      
 
       #Push to git
       system 'git push'
@@ -301,13 +298,46 @@ protected
     return to_return
   end 
 
-  # 
+  # A helper function to determine if local files have diverted from repo
   def has_repo_changed
-    count_of_changes = system 'git status | awk \'$1 ~ /modified|added|deleted/ {++c} END {print c}\''
-    if count_of_changes > 0
+    #update repo
+    system 'git pull'
+    # returns 1+ if anything had been modified, added or deleted, or if the master has diverged
+    # save response to temp file to read below
+    system 'git status | awk \'$1 ~ /modified|added|deleted|diverged,/ {++c} END {print c}\' > /tmp/gitsprint_temp_count_file.txt'
+    count_of_changes = File.read('/tmp/gitsprint_temp_count_file.txt')
+    #delete temp file
+    File.delete('/tmp/gitsprint_temp_count_file.txt')
+
+    # default to false if repo hasn't changed
+    to_return = false
+
+    if count_of_changes.to_i > 0
+      #log result of git status
       status = system 'git status'
-      puts status
-    end 
+
+      #prompt user to decide what to do
+      puts 'Looks like some files in the repo have changed since the last commit. '
+      puts '1. abort blockspring push - commit any changes you want to save prior to pushing'
+      puts '2. blow away changes and push from last commit - this will discard any post-commit changes to all folders in this repo, and could be bad!'
+      puts 'What do you want to do? Enter 1 or 2:'  
+      decision = STDIN.gets.chomp.to_i
+
+      #if the user wants to abort, return true 
+      if decision == 1
+        to_return = true
+      end 
+
+      # wipe changes and return false to contiue with push
+      if decision == 2
+        system 'git reset --hard origin/master'
+        puts "discarding changes"
+      end 
+
+    end
+
+    return to_return
+    
   end
 
   # Return latest config file

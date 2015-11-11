@@ -2,73 +2,74 @@
 `------------------------------------------------------------------------------------------------`
 # Gitspring
 
-The gitspring extension keeps blockspring blocks in sync with git source control from the blockspring cli.
+The gitspring extension keeps blocks in sync with git from the blockspring cli.
 
 ## Installing 
 
-Installing the gitspring extension requires building and installing the ruby gem.
+To install the gitspring extension, build and install the ruby gem.
 
 ```
-$ bundle update
-$ bundle install 
 $ gem build blockspring-cli.gemspec
 $ gem install blockspring-cli-0.0.999.gem
 ```
 
 ##Usage:
 
-Gitspring is used from within a source controled directory from inside a block's top level folder. One or more blocks can reside inside a single git repo. 
+Gitspring is used from within a source controled directory, inside a block's top level directory. One or more blocks can reside inside a single git repo. 
 
 An example directory looks like:
 ```
 - blocks //git repo
- - block-1 //blockspring function
+ - block-1 
   - block.py
   - blockspring.json
   - gitspring.json
- - block-2-2 
+ - block-2 
   - block.rb
-  - ...
+  - blockspring.json
+  - gitspring.json
+- ...
 ```
-Once a git repo has been initialized, the gitspring.json file should be added to the directory and this will start using git as the source of truth for the block's code.
+Once a git repo has been initialized, the gitspring.json file should be added to each block's directory to start using gitspring.
 
-#### Publish a block
+#### Publishing changes to a block
 
-
-Changing a block and publishing the update to blockspring and git is accomplished from the `block-1` folder like:
+Submitting changes to Blockspring is accomplished from within a block's directory:
 ```
-# changes to block.py file in block-1 folder
-# from block-1 directory 
+# changes to block.py file in block-1 directory 
 $ git add block.py
 $ git commit -m "change to function" 
 $ blockspring push 
 ```
 the last command will:
-
-- Unstage any files added since the last commit
-- Add the latest blockspring.json and commits with info and timestamp
-- Push changes to git
+- Determine if the repo has changed since last commit and prompt user to confirm desired action 
+ - Abort push to fix/confirm desired state
+ - Reset directory to the state of the last commit by discarding changes and push
+- Push changes to Blockspring
+- Add the latest timestamp from the blockspring.json file to a new git commit
+- Push latest commits to git
 
 ### Get latest version of a block
 
+Requesting the latest version of a block published to Blockspring will 
 ```
 # from block-1 directory 
 $ blockspring pull
 ```
 
-- Stash any files added or changed since the last commit
+- Stash any changes since the last commit
 - Pull the latest commits from git
-- Unstage your changes
+- Unstash changes
+
+It is possible that commits happened since the last push to Blockspring, and this should only be used to explicity work off latest version in Blockspring. To get the latest version of the block from git, `git pull` should still be used. 
 
 ## Implementation and discussion
 
 The goal of the gitspring extension is to keep track of revisions to blocks.
 
-The current implementation checks to see if a config file has been created in a block's directory to determine if a git repo should be the system of record for a blockspring function.
+The current implementation checks to see if a config file has been created in a block's directory to determine if a git repo should be the system of record for `blockspring push` calls.
 
-The implementation assumes that any changes since the last commit should be discarded when `blockspring push` is called. This might not always be the case and could cause work to be lost.
-
-There is also an issue where changes that are made through the Blockspring UI to function parameters can get out of state with the git repo. The implementation assumes git should be the system of record, and overwrites the changes made in the UI. 
+Changes made through the Blockspring UI to function code or config can get out of state with the git repo, and the implementation assumes git should be the system of record and will discard changes made in the UI. 
 
 There might be better ways of handling versioning, and rolling back to previous versions. Blockspring functions are not versioned, and changing function arguments/return values could break users' spreadsheets and should be done carefully!
 
