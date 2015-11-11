@@ -152,18 +152,18 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
     if use_git
 
       #stage updated json 
-      system 'git add blockspring.json'
       puts "staging blockspring.json"
+      system 'git add blockspring.json'
 
       #Commit message for blockspring push
+      puts "git commit of blockspring push timestamp"   
       config_json = config_to_json
       commit_cmd = "git commit -m \"Block - #{config_json['title']} - Push: #{config_json['id']} at #{config_json['updated_at'].to_s}\""
       system commit_cmd 
-      puts "git commit of blockspring push timestamp"      
 
       #Push to git
-      system 'git push'
       puts "git push"
+      system 'git push'
     end
 
   end
@@ -303,6 +303,7 @@ protected
   # A helper function to determine if local files have diverted from repo
   def has_repo_changed
     #update repo
+    puts 'git pull'
     system 'git pull'
     # returns 1+ if anything had been modified, added or deleted, or if the master has diverged
     # save response to temp file to read below
@@ -332,8 +333,8 @@ protected
 
       # wipe changes and return false to contiue with push
       if decision == 2
-        system 'git reset --hard origin/master'
         puts "discarding changes"
+        system 'git reset --hard origin/master'
       end 
 
     end
