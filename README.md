@@ -1,4 +1,4 @@
-`------------------------------------------------------------------------------------------------------------------------`
+`------------------------------------------------------------------------------------------------`
 `Testing gitspring extension:`
 # Gitspring
 
@@ -21,24 +21,24 @@ Gitspring is used from within a source controled directory from inside a block's
 
 An example directory looks like:
 ```
-- functions //git repo
- - function-1 //blockspring function
+- blocks //git repo
+ - block-1 //blockspring function
   - block.py
   - blockspring.json
   - gitspring.json
- - function-2 
+ - block-2f-2 
   - block.rb
   - ...
 ```
 Once a git repo has been initialized, the gitspring.json file should be added to the directory and this will start using git as the source of truth for the block's code.
 
-### `blockspring push` - Publish the block
+#### Publish a block
 
 
-Changing a block and publishing the update to blockspring and git is accomplished from the `function-1` folder like:
+Changing a block and publishing the update to blockspring and git is accomplished from the `block-1` folder like:
 ```
-# changes to block.py file in function-1 folder
-# from function-1 directory 
+# changes to block.py file in block-1 folder
+# from block-1 directory 
 $ git add block.py
 $ git commit -m "change to function" 
 $ blockspring push 
@@ -49,10 +49,10 @@ the last command will:
 - Add the latest blockspring.json and commits with info and timestamp
 - Push changes to git
 
-### `blockspring pull` - Get latest version of block
+### Get latest version of a block
 
 ```
-# from function-1 directory 
+# from block-1 directory 
 $ blockspring pull
 ```
 
@@ -62,9 +62,9 @@ $ blockspring pull
 
 ## Implementation and discussion
 
-The goal of the gitspring extension is to keep track revisions of the funciton published to blockspring.
+The goal of the gitspring extension is to keep track of revisions to blocks.
 
-The current implementation checks to see if a config file has been created to determine if a git repo should be the system of record for a blockspring function.
+The current implementation checks to see if a config file has been created in a block's directory to determine if a git repo should be the system of record for a blockspring function.
 
 The implementation assumes that any changes since the last commit should be discarded when `blockspring push` is called. This might not always be the case and could cause work to be lost.
 
@@ -72,7 +72,7 @@ There is also an issue where changes that are made through the Blockspring UI to
 
 There might be better ways of handling versioning, and rolling back to previous versions. Blockspring functions are not versioned, and changing function arguments/return values could break users' spreadsheets and should be done carefully!
 
-`------------------------------------------------------------------------------------------------------------------------`
+`------------------------------------------------------------------------------------------------`
 `Non-gitspring documentation begins here:`
 
 # Blockspring CLI.
