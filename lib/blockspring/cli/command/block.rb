@@ -45,28 +45,23 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
     # load config file
     config_json = config_to_json
     
-    #check to see if the git config file exists
-    if use_git
-      
-      #stash any changes to the git index
-      system 'git stash'
+    #stash any changes since last commit
+    if use_git      
       puts 'stashing any local changes'
-
-      #pull latest code from github
-      system 'git pull'
-      puts "git pull"
-
-      #reapply changes and deal with any conflicts
-      system 'git stash pop'
-      puts "reapplying stashed changes"
-      
-    else
-      #pull latest code from blockspring 
-      # TODO: ensure valid config
-      puts "Pulling #{config_json['user']}/#{config_json['id']}"
-      block = get_block(config_json['id'])
-      save_block_files(block, '.', 'Pulling')
+      system 'git stash'
     end
+    #pull latest code from blockspring 
+    # TODO: ensure valid config
+    puts "Pulling #{config_json['user']}/#{config_json['id']}"
+    block = get_block(config_json['id'])
+    save_block_files(block, '.', 'Pulling')
+    
+    if use_git
+      #reapply changes and deal with any conflicts
+      puts "reapplying stashed changes"
+      system 'git stash pop'      
+    end
+
     puts "Done."
   end
 
