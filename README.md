@@ -43,9 +43,9 @@ $ blockspring push
 ```
 the last command will:
 - Check if the repo has changed since last commit:
- - If the repo has changed, the user is prompted to confirm desired action:
-  - 1. Abort push and stop executing prior to last 3 steps below
-  - 2. Reset directory to the state of the last commit by discarding all changes in the repo and continue:
+    - If the repo has changed, the user is prompted to confirm desired action:
+        - 1. Abort push and stop executing prior to last 3 steps below
+        - 2. Reset directory to the state of the last commit by discarding all changes in the repo and continue:
 - Push code from last commit to Blockspring
 - Add the latest timestamp from the blockspring.json file to a new git commit
 - Push latest commits to git
@@ -59,7 +59,7 @@ $ blockspring pull
 ```
 
 - Stash any changes since the last commit
-- Pull the latest commits from git
+- Pull the latest block from Blockspring
 - Un-stash changes
 
 It is possible that commits happened since the last push to Blockspring, and this should only be used to explicitly work off latest version in Blockspring. To get the latest version of the block from git, `git pull` should still be used. 
