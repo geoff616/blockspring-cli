@@ -75,7 +75,7 @@ $ blockspring pull
 
 This should only be used to explicitly work off latest version in Blockspring because git commits may have happened since the last push to Blockspring, 
 
-To get the latest version of the block from git, `git pull` should still be used and is likely better to work off of.  
+To get the latest version of the block from git, `git pull` should still be used and is likely safer to work off of.  
 
 ## Implementation and discussion
 
@@ -88,6 +88,8 @@ Changes made through the Blockspring UI to function code or config can get out o
 There might be better ways of handling versioning, and rolling back to previous versions. Blockspring functions are not versioned. Changing function arguments/return values could break users' spreadsheets and should be done carefully!
 
 Merging might also be unnecessarily complicated, where changes within one block inside the repo might prevent another block from pushing. Not sure if there is a way around this when multiple blocks are in one repo. 
+
+The current implementation does not have a guarantee of consistensy with git. With `git_config.json` as a seperate file, anyone not using gitspring and running `blockspring pull` can make subsequentlt untracked changes to the block. Consistency could be enforced by adding a property to the `blockspring.json` to respect git state on the client, assuming the user had the git cli installed. This is currently not possible because fields added to `blockspring.json` are deleted by the server during the `blockspring push` handling. 
 
 `------------------------------------------------------------------------------------------------`
 `------------------------------------------------------------------------------------------------` 

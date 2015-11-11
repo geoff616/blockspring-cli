@@ -307,10 +307,10 @@ protected
     system 'git pull'
     # returns 1+ if anything had been modified, added or deleted, or if the master has diverged
     # save response to temp file to read below
-    system 'git status | awk \'$1 ~ /modified|added|deleted|diverged,/ {++c} END {print c}\' > /tmp/gitsprint_temp_count_file.txt'
-    count_of_changes = File.read('/tmp/gitsprint_temp_count_file.txt')
+    system 'git status | awk \'$1 ~ /modified|added|deleted|diverged,/ {++c} END {print c}\' > /tmp/gitspring_temp_count_file.txt'
+    count_of_changes = File.read('/tmp/gitspring_temp_count_file.txt')
     #delete temp file
-    File.delete('/tmp/gitsprint_temp_count_file.txt')
+    File.delete('/tmp/gitspring_temp_count_file.txt')
 
     # default to false if repo hasn't changed
     to_return = false
