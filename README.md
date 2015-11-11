@@ -41,7 +41,7 @@ A sample git_config.json file could look like:
 
 ```
 
-to keep track of the parent repo, but there are no requirements beyond the file existing in the block.
+to keep track of the parent repo, but there are no requirements beyond the file existing.
 
 #### Publishing changes to a block
 
