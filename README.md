@@ -83,13 +83,13 @@ The goal of the gitspring extension is to keep track of revisions to blocks.
 
 The implementation checks to see if a git_config file has been created in a block's directory. If present, git will be used as the system of record for `blockspring push` calls.
 
-Changes made through the Blockspring UI to function code or config can get out of state with the git repo. The implementation assumes changes not commited to git should be ignored. This could be approached more conservatively. 
+Changes made through the Blockspring UI to function code or config can get out of state with the git repo. The implementation assumes changes not commited to git should be ignored. This inconsistency could be approached more conservatively. 
+
+In addition to changes in the UI, the current implementation does not have a guarantee of consistensy with git from the command line. With `git_config.json` as a seperate file, anyone not using gitspring and running `blockspring pull` can make subsequently untracked changes to the block. Consistency could be enforced by adding a property to the `blockspring.json` to respect git state prior to executing the `blockspring push` that won't be tracked in git assuming the user had the git cli installed. This approach is currently not possible because fields added to `blockspring.json` are deleted by the server during the `blockspring push` handling. 
 
 There might be better ways of handling versioning, and rolling back to previous versions. Blockspring functions are not versioned. Changing function arguments/return values could break users' spreadsheets and should be done carefully!
 
 Merging might also be unnecessarily complicated, where changes within one block inside the repo might prevent another block from pushing. Not sure if there is a way around this when multiple blocks are in one repo. 
-
-The current implementation does not have a guarantee of consistensy with git. With `git_config.json` as a seperate file, anyone not using gitspring and running `blockspring pull` can make subsequentlt untracked changes to the block. Consistency could be enforced by adding a property to the `blockspring.json` to respect git state on the client, assuming the user had the git cli installed. This is currently not possible because fields added to `blockspring.json` are deleted by the server during the `blockspring push` handling. 
 
 `------------------------------------------------------------------------------------------------`
 `------------------------------------------------------------------------------------------------` 
