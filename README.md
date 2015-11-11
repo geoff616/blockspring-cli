@@ -59,9 +59,9 @@ $ blockspring pull
 
 - Stash any changes since the last commit
 - Pull the latest commits from git
-- Unstash changes
+- Un-stash changes
 
-It is possible that commits happened since the last push to Blockspring, and this should only be used to explicity work off latest version in Blockspring. To get the latest version of the block from git, `git pull` should still be used. 
+It is possible that commits happened since the last push to Blockspring, and this should only be used to explicitly work off latest version in Blockspring. To get the latest version of the block from git, `git pull` should still be used. 
 
 ## Implementation and discussion
 
@@ -73,6 +73,7 @@ Changes made through the Blockspring UI to function code or config can get out o
 
 There might be better ways of handling versioning, and rolling back to previous versions. Blockspring functions are not versioned, and changing function arguments/return values could break users' spreadsheets and should be done carefully!
 
+Merging might also be unnecessarily complicated, where changes within one block inside the repo might prevent another block from pushing, but not sure if there is a way around this when multiple blocks are in one repo.
 `------------------------------------------------------------------------------------------------`
 `------------------------------------------------------------------------------------------------`
 `Non-gitspring documentation begins here:`
