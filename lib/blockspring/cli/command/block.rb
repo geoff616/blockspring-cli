@@ -47,6 +47,8 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
     
     if use_git      
       #stash any changes since last commit
+      # NOTE: Maybe consider branching like: https://codingkilledthecat.wordpress.com/2012/04/27/git-stash-pop-considered-harmful/
+      # or explicitly pulling the state from the git commit
       puts 'stashing any local changes'
       system 'git stash'
     end

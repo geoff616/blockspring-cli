@@ -20,15 +20,15 @@ Gitspring is used from within a repo, inside a block's top level directory. One 
 An example repo directory looks like:
 ```
 - blocks //git repo
- - block-1 
-  - block.py
-  - blockspring.json
-  - gitspring.json
- - block-2 
-  - block.rb
-  - blockspring.json
-  - gitspring.json
-- ...
+    - block-1 
+        - block.py
+        - blockspring.json
+        - gitspring.json
+    - block-2 
+        - block.rb
+        - blockspring.json
+        - gitspring.json
+    - ...
 ```
 Once a git repo has been initialized, the gitspring.json file should be added to each block's directory to start using gitspring. 
 
