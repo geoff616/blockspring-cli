@@ -1,5 +1,5 @@
 `------------------------------------------------------------------------------------------------`
-`Testing gitspring extension:`
+`------------------------------------------------------------------------------------------------`
 # Gitspring
 
 The gitspring extension keeps blockspring blocks in sync with git source control from the blockspring cli.
@@ -72,6 +72,7 @@ There is also an issue where changes that are made through the Blockspring UI to
 
 There might be better ways of handling versioning, and rolling back to previous versions. Blockspring functions are not versioned, and changing function arguments/return values could break users' spreadsheets and should be done carefully!
 
+`------------------------------------------------------------------------------------------------`
 `------------------------------------------------------------------------------------------------`
 `Non-gitspring documentation begins here:`
 
