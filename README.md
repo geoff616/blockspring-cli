@@ -23,14 +23,14 @@ An example repo directory looks like:
     - block-1 
         - block.py
         - blockspring.json
-        - gitspring.json
+        - git_config.json
     - block-2 
         - block.rb
         - blockspring.json
-        - gitspring.json
+        - git_config.json
     - ...
 ```
-Once a git repo has been initialized, the gitspring.json file should be added to each block's directory to start using gitspring. 
+Once a git repo has been initialized, the git_config.json file should be added to each block's directory to start using gitspring. 
 
 A sample git_config.json file could look like: 
 
