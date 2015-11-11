@@ -15,9 +15,9 @@ $ gem install blockspring-cli-0.0.999.gem
 
 ##Usage:
 
-Gitspring is used from within a source controlled directory, inside a block's top level directory. One or more blocks can reside inside a single git repo. 
+Gitspring is used from within a repo, inside a block's top level directory. One or more blocks can reside inside a single git repo. 
 
-An example directory looks like:
+An example repo directory looks like:
 ```
 - blocks //git repo
  - block-1 
@@ -30,7 +30,18 @@ An example directory looks like:
   - gitspring.json
 - ...
 ```
-Once a git repo has been initialized, the gitspring.json file should be added to each block's directory to start using gitspring.
+Once a git repo has been initialized, the gitspring.json file should be added to each block's directory to start using gitspring. 
+
+A sample git_config.json file could look like: 
+
+```
+{
+  "git_url": "git@github.com:GITHUB_ACCOUNT/REPO_NAME.git"
+}
+
+```
+
+to keep track of the parent repo, but there are no requirements beyond the file existing in the block.
 
 #### Publishing changes to a block
 
@@ -62,19 +73,21 @@ $ blockspring pull
 - Pull the latest block from Blockspring
 - Un-stash changes
 
-It is possible that commits happened since the last push to Blockspring, and this should only be used to explicitly work off latest version in Blockspring. To get the latest version of the block from git, `git pull` should still be used. 
+It is possible that commits happened since the last push to Blockspring, and this should only be used to explicitly work off latest version in Blockspring. 
+
+To get the latest version of the block from git, `git pull` should still be used. 
 
 ## Implementation and discussion
 
 The goal of the gitspring extension is to keep track of revisions to blocks.
 
-The current implementation checks to see if a config file has been created in a block's directory to determine if a git repo should be the system of record for `blockspring push` calls.
+The implementation checks to see if a git_config file has been created in a block's directory. If present, git will be used as the system of record for `blockspring push` calls.
 
-Changes made through the Blockspring UI to function code or config can get out of state with the git repo, and the implementation assumes git should be the system of record and will discard changes made in the UI. 
+Changes made through the Blockspring UI to function code or config can get out of state with the git repo. The implementation assumes changes not commited to git should be ignored. This could be approached more conservatively. 
 
-There might be better ways of handling versioning, and rolling back to previous versions. Blockspring functions are not versioned, and changing function arguments/return values could break users' spreadsheets and should be done carefully!
+There might be better ways of handling versioning, and rolling back to previous versions. Blockspring functions are not versioned. Changing function arguments/return values could break users' spreadsheets and should be done carefully!
 
-Merging might also be unnecessarily complicated, where changes within one block inside the repo might prevent another block from pushing, but not sure if there is a way around this when multiple blocks are in one repo. 
+Merging might also be unnecessarily complicated, where changes within one block inside the repo might prevent another block from pushing. Not sure if there is a way around this when multiple blocks are in one repo. 
 
 `------------------------------------------------------------------------------------------------`
 `------------------------------------------------------------------------------------------------` 
