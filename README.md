@@ -52,7 +52,7 @@ the last command will:
 
 ### Get latest version of a block
 
-Requesting the latest version of a block published to Blockspring will 
+Requesting the latest version of a block published to Blockspring: 
 ```
 # from block-1 directory 
 $ blockspring pull
@@ -74,9 +74,11 @@ Changes made through the Blockspring UI to function code or config can get out o
 
 There might be better ways of handling versioning, and rolling back to previous versions. Blockspring functions are not versioned, and changing function arguments/return values could break users' spreadsheets and should be done carefully!
 
-Merging might also be unnecessarily complicated, where changes within one block inside the repo might prevent another block from pushing, but not sure if there is a way around this when multiple blocks are in one repo.
+Merging might also be unnecessarily complicated, where changes within one block inside the repo might prevent another block from pushing, but not sure if there is a way around this when multiple blocks are in one repo. 
+
 `------------------------------------------------------------------------------------------------`
-`------------------------------------------------------------------------------------------------`
+`------------------------------------------------------------------------------------------------` 
+
 `Non-gitspring documentation begins here:`
 
 # Blockspring CLI.
