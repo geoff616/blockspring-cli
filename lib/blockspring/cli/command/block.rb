@@ -85,6 +85,11 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
     _user, key = Blockspring::CLI::Auth.get_credentials
 
     if use_git
+
+
+      # Call function that executes git status
+      has_repo_changed
+
       #remove any staged files prior to last commit
       # NOTE: Not sure unstaging is the best strategy to keep git in sync with blockspring
       # This might be removing changes. Maybe `git stash` and communicate this is happening?
@@ -158,7 +163,7 @@ class Blockspring::CLI::Command::Block < Blockspring::CLI::Command::Base
 
       #Commit message for blockspring push
       config_json = config_to_json
-      commit_cmd = 'git commit -m "Blockspring Push: ' + config_json['id'] + ' at ' + config_json['updated_at'].to_s + '"'
+      commit_cmd = "git commit -m \"Blockspring Push: #{config_json['id']} at #{config_json['updated_at'].to_s}\""
       system commit_cmd 
       puts "git commit"      
 
@@ -301,7 +306,16 @@ protected
     return to_return
   end 
 
-  #return latest config file
+  # 
+  def has_repo_changed
+    count_of_changes = system 'git status | awk \'$1 ~ /modified|added|deleted/ {++c} END {print c}\''
+    if count_of_changes > 0
+      status = system 'git status'
+      puts status
+    end 
+  end
+
+  # Return latest config file
   def config_to_json
     config_text = File.read('blockspring.json')
     config_json = JSON.parse(config_text)
